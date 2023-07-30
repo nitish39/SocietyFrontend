@@ -1,6 +1,9 @@
 import axios from 'axios';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 import {
   MDBBtn,
@@ -42,47 +45,63 @@ export const MemberLogin = () => {
       };
 
       const handleLogin = async (e) => {
-
         e.preventDefault();
-
-        try{
-
-            if(isEmailValid(credentials.email))
-            {
-                 if(isPasswordValid(credentials.password))
-                 {
-                    const response = await axios.post(`http://localhost:9001/members/validatemember`,JSON.stringify(credentials),
-                    {headers: {'Content-Type': 'application/json'}});
-                    const {userId, role} = response.data;
-                    const user = {userId, role};
-                    JSON.stringify(user);
-
-                    localStorage.setItem('userId',userId);
-                    localStorage.setItem('isLoggedIn1', 'true');
-                    setIsLoggedIn1(true);
-                    if(user.role === 'resident')
-                    {
-                        navigate('/memberhomepage');
-                    }
-                    else if(user.role === 'committee_member')
-                    {
-                        navigate('/committeemember');
-                    }
-                    else{
-                        alert("Role is not specified!");
-                    }
-                }
-                 else {
-                         alert("Password is not in format!");
-                 }
-            }else {
-                    alert("Email is not in format!");
+    
+        try {
+          if (isEmailValid(credentials.email)) {
+            if (isPasswordValid(credentials.password)) {
+              const response = await axios.post(
+                `http://localhost:9001/members/validatemember`,
+                JSON.stringify(credentials),
+                { headers: { 'Content-Type': 'application/json' } }
+              );
+    
+              const { userId, role } = response.data;
+              const user = { userId, role };
+              JSON.stringify(user);
+    
+              localStorage.setItem('userId', userId);
+              localStorage.setItem('isLoggedIn1', 'true');
+              setIsLoggedIn1(true);
+    
+              if (user.role === 'resident') {
+                navigate('/memberhomepage');
+              } else if (user.role === 'committee_member') {
+                navigate('/committeemember');
+              } else {
+                alert('Role is not specified!');
+              }
+    
+              // Display a toast message for successful login
+              toast.success('Successfully Logged in!', {
+                position: toast.POSITION.TOP_RIGHT,
+                autoClose: 3000, // 3 seconds
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+              });
+            } else {
+              alert('Password is not in the correct format!');
             }
-        } catch(error){
-            console.error(error);
-            alert("Invalid Credentials!");
+          } else {
+            alert('Email is not in the correct format!');
+          }
+        } catch (error) {
+          console.error(error);
+          // Display a toast message for invalid credentials
+          toast.error('Invalid Credentials!', {
+            position: toast.POSITION.TOP_RIGHT,
+            autoClose: 3000, // 3 seconds
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
         }
-    }
+      };
 
         return (
           <div style={{ backgroundColor: 'hsl(0, 0%, 96%)' }}>
