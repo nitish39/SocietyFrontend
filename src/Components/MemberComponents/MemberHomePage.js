@@ -115,7 +115,16 @@ export const MemberHomePage = () => {
   const logout = () => {
     localStorage.removeItem('isLoggedIn1');
     setIsLoggedIn1(false);
-    alert('Successfully Logged out!');
+    // Displaying a toast message for successful logout
+  toast.success('Successfully Logged out!', {
+    position: toast.POSITION.TOP_RIGHT,
+    autoClose: 2000, // 3 seconds
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+  });
     //navigate('/');
   };
 

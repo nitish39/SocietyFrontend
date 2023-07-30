@@ -1,6 +1,8 @@
 import axios from 'axios';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import {
   MDBBtn,
@@ -37,35 +39,79 @@ export const AdminLogin = () => {
     }
 
     const handleLogin = async (e) => {
-
-        e.preventDefault();
-
-        try{
-            if(isEmailValid(credentials.email))
-            {
-                
-                if(isPasswordValid(credentials.password))
-                {
-                    const response = await axios.post('http://localhost:9001/admin/validateadmin',JSON.stringify(credentials),
-                    {headers: {'Content-Type': 'application/json'}});
-
-                    const output = response.data;
-
-                    localStorage.setItem('isLoggedIn2',true);
-                    setIsLoggedIn2(true);
-                    //alert(output);
-                    navigate('/adminhomepage');
-                }else{
-                    alert("Password format is incorrect!");
-                }
-            }else{
-                alert("Email is in Incorrect format!");
-            }
-        } catch(error){
-            console.error(error);
-            alert("Login Failed!")
+      e.preventDefault();
+    
+      try {
+        if (isEmailValid(credentials.email)) {
+          if (isPasswordValid(credentials.password)) {
+            const response = await axios.post(
+              'http://localhost:9001/admin/validateadmin',
+              JSON.stringify(credentials),
+              { headers: { 'Content-Type': 'application/json' } }
+            );
+    
+            const output = response.data;
+    
+            localStorage.setItem('isLoggedIn2', true);
+            setIsLoggedIn2(true);
+            // alert(output);
+            navigate('/adminhomepage');
+    
+            // Display a toast message for successful login
+            toast.success('Successfully Logged in!', {
+              position: toast.POSITION.TOP_RIGHT,
+              autoClose: 3000, // 3 seconds
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            });
+          } else {
+            alert('Password format is incorrect!');
+    
+            // Display a toast message for incorrect password format
+            toast.error('Password format is incorrect!', {
+              position: toast.POSITION.TOP_RIGHT,
+              autoClose: 3000, // 3 seconds
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            });
+          }
+        } else {
+          alert('Email is in Incorrect format!');
+    
+          // Display a toast message for incorrect email format
+          toast.error('Email is in Incorrect format!', {
+            position: toast.POSITION.TOP_RIGHT,
+            autoClose: 3000, // 3 seconds
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
         }
+      } catch (error) {
+        console.error(error);
+        alert('Login Failed!');
+    
+        // Display a toast message for login failure
+        toast.error('Login Failed!', {
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 3000, // 3 seconds
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      }
     };
+    
 
     return (
         <div style={{ backgroundColor: 'hsl(0, 0%, 96%)' }}>

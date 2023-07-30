@@ -9,6 +9,8 @@ import {
 } from 'mdb-react-ui-kit';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export const AdminHomePage = () => {
   const [isLoggedIn2, setIsLoggedIn2] = useState(false);
@@ -26,8 +28,17 @@ export const AdminHomePage = () => {
   const logout = () => {
     localStorage.removeItem('isLoggedIn2');
     setIsLoggedIn2(false);
-    alert('Successfully Logged out!');
-  };
+    // Display a toast message for successful logout
+  toast.success('Successfully Logged out!', {
+    position: toast.POSITION.TOP_RIGHT,
+    autoClose: 3000, // 3 seconds
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+  });
+};
 
   const navigatePage1 = () => {
     navigate('/adminloginpage');
