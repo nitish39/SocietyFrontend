@@ -17,6 +17,8 @@ import { useNavigate } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.css';
 import { Card, CardGroup } from 'react-bootstrap';
 import './Committe.css';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export const CommitteeMemberHomePage = () => {
 
@@ -362,9 +364,19 @@ const renderAddRemainderForm = () => {
   const logout = () => {
     localStorage.removeItem('isLoggedIn1');
     setIsLoggedIn1(false);
-    alert('Successfully Logged out!');
-    navigate('/');
-  };
+    // Displaying a toast message for successful logout
+  toast.success('Successfully Logged out!', {
+    position: toast.POSITION.TOP_RIGHT,
+    autoClose: 2000, // 3 seconds
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+  });
+
+  navigate('/');
+};
 
 
 const handleAddEvent = () => {
